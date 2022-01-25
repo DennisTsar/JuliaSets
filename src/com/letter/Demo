@@ -1,0 +1,83 @@
+package com.letter;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.text.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        JuliaSetProgram app = new JuliaSetProgram();
+    }
+}
+class JuliaSetProgram extends JPanel implements AdjustmentListener{
+    JFrame frame;
+    int red, green, blue;
+    JScrollBar rBar;
+    JScrollBar gBar;
+    JScrollBar bBar;
+    JPanel scrollPanel, labelPanel, bigPanel;
+    JLabel rLabel, gLabel, bLabel;
+    public JuliaSetProgram(){
+        frame = new JFrame("Julia Set Program");
+        frame.add(this);
+        frame.setSize(1400,800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        rBar = new JScrollBar(JScrollBar.HORIZONTAL,0,0,0,255);
+        rBar.addAdjustmentListener(this);
+        red = rBar.getValue();
+
+        gBar = new JScrollBar(JScrollBar.HORIZONTAL,0,0,0,255);
+        gBar.addAdjustmentListener(this);
+        green = gBar.getValue();
+
+        bBar = new JScrollBar(JScrollBar.HORIZONTAL,0,0,0,255);
+        bBar.addAdjustmentListener(this);
+        blue = bBar.getValue();
+
+        GridLayout  grid = new GridLayout(3,1);
+        rLabel = new JLabel("Red");
+        gLabel = new JLabel("Green");
+        bLabel = new JLabel("Blue");
+
+        labelPanel = new JPanel();
+        labelPanel.setLayout(grid);
+        labelPanel.add(rLabel);
+        labelPanel.add(gLabel);
+        labelPanel.add(bLabel);
+
+        scrollPanel = new JPanel();
+        scrollPanel.setLayout(grid);
+        scrollPanel.add(rBar);
+        scrollPanel.add(gBar);
+        scrollPanel.add(bBar);
+
+
+        bigPanel = new JPanel();
+        bigPanel.setLayout(new BorderLayout());
+        bigPanel.add(labelPanel,BorderLayout.WEST);
+        bigPanel.add(scrollPanel,BorderLayout.CENTER);
+
+        frame.add(bigPanel,BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        //g.setColor(Color.b);
+        g.setColor(new Color(red,green,blue));
+        g.fillRect(0,0,frame.getWidth(),frame.getHeight());
+    }
+    public void adjustmentValueChanged(AdjustmentEvent e) {
+        if(e.getSource()==rBar)
+            red = rBar.getValue();
+        else if(e.getSource()==gBar)
+            green = gBar.getValue();
+        else
+            blue = bBar.getValue();
+        repaint();
+    }
+}
